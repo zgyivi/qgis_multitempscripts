@@ -1,0 +1,400 @@
+<!DOCTYPE model>
+<Option type="Map">
+  <Option name="children" type="Map">
+    <Option name="script:MultiClipRename_1" type="Map">
+      <Option value="true" name="active" type="bool"/>
+      <Option name="alg_config"/>
+      <Option value="script:MultiClipRename" name="alg_id" type="QString"/>
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="865" name="component_pos_x" type="double"/>
+        <Option value="192" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="Clip and rename multiple files with same extent" name="component_description" type="QString"/>
+      <Option value="51" name="component_height" type="double"/>
+      <Option value="512" name="component_pos_x" type="double"/>
+      <Option value="315.5" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option name="dependencies"/>
+      <Option value="script:MultiClipRename_1" name="id" type="QString"/>
+      <Option name="outputs"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="false" name="parameters_collapsed" type="bool"/>
+      <Option name="params" type="Map">
+        <Option name="CLIPEXTENT" type="List">
+          <Option type="Map">
+            <Option value="Selectedarea" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="INPUT" type="List">
+          <Option type="Map">
+            <Option value="script:ProductLister_1" name="child_id" type="QString"/>
+            <Option value="OUTPUT" name="output_name" type="QString"/>
+            <Option value="1" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="MASK" type="List">
+          <Option type="Map">
+            <Option value="Dateandbandmask" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="OUTFOLDER" type="List">
+          <Option type="Map">
+            <Option value="VRTDatafolder" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+    <Option name="script:ProductLister_1" type="Map">
+      <Option value="true" name="active" type="bool"/>
+      <Option name="alg_config"/>
+      <Option value="script:ProductLister" name="alg_id" type="QString"/>
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="645" name="component_pos_x" type="double"/>
+        <Option value="92" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="List satellite products" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="507" name="component_pos_x" type="double"/>
+      <Option value="103" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option name="dependencies"/>
+      <Option value="script:ProductLister_1" name="id" type="QString"/>
+      <Option name="outputs"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+      <Option name="params" type="Map">
+        <Option name="Sourcefolder" type="List">
+          <Option type="Map">
+            <Option value="Sourcefolder" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="mask" type="List">
+          <Option type="Map">
+            <Option value="Filenamemask" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+    <Option name="script:buildcustomvrts_1" type="Map">
+      <Option value="true" name="active" type="bool"/>
+      <Option name="alg_config"/>
+      <Option value="script:buildcustomvrts" name="alg_id" type="QString"/>
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="1085" name="component_pos_x" type="double"/>
+        <Option value="292" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="Build multiple custom VRT files" name="component_description" type="QString"/>
+      <Option value="39" name="component_height" type="double"/>
+      <Option value="513" name="component_pos_x" type="double"/>
+      <Option value="474.5" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option name="dependencies"/>
+      <Option value="script:buildcustomvrts_1" name="id" type="QString"/>
+      <Option name="outputs"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+      <Option name="params" type="Map">
+        <Option name="BANDS" type="List">
+          <Option type="Map">
+            <Option value="Listofbands" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="INPUT" type="List">
+          <Option type="Map">
+            <Option value="script:MultiClipRename_1" name="child_id" type="QString"/>
+            <Option value="OUTPUT" name="output_name" type="QString"/>
+            <Option value="1" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="MASK" type="List">
+          <Option type="Map">
+            <Option value="2" name="source" type="int"/>
+            <Option value=".+\/([0-9]{8})_(B[0-9]{1}[0-9,A]{1})\.tif$" name="static_value" type="QString"/>
+          </Option>
+        </Option>
+        <Option name="OUTFOLDER" type="List">
+          <Option type="Map">
+            <Option value=" @VRTfolder " name="expression" type="QString"/>
+            <Option value="3" name="source" type="int"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+  </Option>
+  <Option name="designerParameterValues" type="Map">
+    <Option value=".+_con\/.+_([0-9]{8})T[0-9]{6}_(B[0-9]{1}[0-9,A]{1})\.tif$" name="Dateandbandmask" type="QString"/>
+    <Option value="*.tif" name="Filenamemask" type="QString"/>
+    <Option value="310943.797700000,319113.241600000,5245878.353500000,5254768.630600000 [EPSG:32634]" name="Selectedarea" type="QString"/>
+    <Option value="/Adat/PREGA/Download/2016" name="Sourcefolder" type="QString"/>
+    <Option value="true" name="VERBOSE_LOG" type="bool"/>
+    <Option value="/AdatSSD/PREGA/Szakdolgozat/V2/2017/Data" name="VRTDatafolder" type="QString"/>
+    <Option value="/AdatSSD/PREGA/Szakdolgozat/V2/2017" name="VRTfolder" type="QString"/>
+  </Option>
+  <Option name="groupBoxes"/>
+  <Option name="help"/>
+  <Option name="modelVariables"/>
+  <Option value="preparation" name="model_group" type="QString"/>
+  <Option value="CreateSentinelVRT" name="model_name" type="QString"/>
+  <Option name="parameterDefinitions" type="Map">
+    <Option name="Dateandbandmask" type="Map">
+      <Option value=".+_([0-9]{8})T[0-9]{6}_(B[0-9]{1}[0-9,A]{1})\.jp2$" name="default" type="QString"/>
+      <Option value="Date and band mask" name="description" type="QString"/>
+      <Option value="10" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="Dateandbandmask" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="Filenamemask" type="Map">
+      <Option value="*.jp2" name="default" type="QString"/>
+      <Option value="File name filter" name="description" type="QString"/>
+      <Option value="2" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="Filenamemask" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="Listofbands" type="Map">
+      <Option value="B01,B02,B03,B04,B05,B06,B07,B08,B09,B10,B11,B12,B8A" name="default" type="QString"/>
+      <Option value="List of bands" name="description" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="Listofbands" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="Selectedarea" type="Map">
+      <Option value="310943.797698796,319113.241589786,5245878.353460406,5254768.630635895 [EPSG:32634]" name="default" type="QString"/>
+      <Option value="Selected area" name="description" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="Selectedarea" name="name" type="QString"/>
+      <Option value="extent" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="Sourcefolder" type="Map">
+      <Option value="1" name="behavior" type="int"/>
+      <Option value="/Adat/PREGA/Download/2020" name="default" type="QString"/>
+      <Option value="Source folder" name="description" type="QString"/>
+      <Option value="" name="extension" type="QString"/>
+      <Option value="All files (*.*)" name="filefilter" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="Sourcefolder" name="name" type="QString"/>
+      <Option value="file" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="VERBOSE_LOG" type="Map">
+      <Option value="false" name="default" type="bool"/>
+      <Option value="Verbose logging" name="description" type="QString"/>
+      <Option value="12" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="VERBOSE_LOG" name="name" type="QString"/>
+      <Option value="boolean" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="VRTDatafolder" type="Map">
+      <Option value="1" name="behavior" type="int"/>
+      <Option value="/AdatSSD/PREGA/Szakdolgozat/V2/2020/Data" name="default" type="QString"/>
+      <Option value="VRT Data folder" name="description" type="QString"/>
+      <Option value="" name="extension" type="QString"/>
+      <Option value="All files (*.*)" name="filefilter" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="VRTDatafolder" name="name" type="QString"/>
+      <Option value="file" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="VRTfolder" type="Map">
+      <Option value="1" name="behavior" type="int"/>
+      <Option value="/AdatSSD/PREGA/Szakdolgozat/V2/2020" name="default" type="QString"/>
+      <Option value="VRT folder" name="description" type="QString"/>
+      <Option value="" name="extension" type="QString"/>
+      <Option value="All files (*.*)" name="filefilter" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="VRTfolder" name="name" type="QString"/>
+      <Option value="file" name="parameter_type" type="QString"/>
+    </Option>
+  </Option>
+  <Option name="parameterOrder" type="StringList">
+    <Option value="Sourcefolder" type="QString"/>
+    <Option value="Filenamemask" type="QString"/>
+    <Option value="Dateandbandmask" type="QString"/>
+    <Option value="Selectedarea" type="QString"/>
+    <Option value="VRTDatafolder" type="QString"/>
+    <Option value="VRTfolder" type="QString"/>
+  </Option>
+  <Option name="parameters" type="Map">
+    <Option name="Dateandbandmask" type="Map">
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="541.5318925756244" name="component_pos_x" type="double"/>
+        <Option value="15" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="Dateandbandmask" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="121.5318925756244" name="component_pos_x" type="double"/>
+      <Option value="255" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option value="Dateandbandmask" name="name" type="QString"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+    </Option>
+    <Option name="Filenamemask" type="Map">
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="30" name="component_height" type="double"/>
+        <Option value="318.5318925756244" name="component_pos_x" type="double"/>
+        <Option value="106" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="Filenamemask" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="121.5318925756244" name="component_pos_x" type="double"/>
+      <Option value="102" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option value="Filenamemask" name="name" type="QString"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+    </Option>
+    <Option name="Listofbands" type="Map">
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="541.5318925756244" name="component_pos_x" type="double"/>
+        <Option value="15" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="Listofbands" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="118.5318925756244" name="component_pos_x" type="double"/>
+      <Option value="303" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option value="Listofbands" name="name" type="QString"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+    </Option>
+    <Option name="Selectedarea" type="Map">
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="542" name="component_pos_x" type="double"/>
+        <Option value="15" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="Selectedarea" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="121.53189257562437" name="component_pos_x" type="double"/>
+      <Option value="150.35459505041626" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option value="Selectedarea" name="name" type="QString"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+    </Option>
+    <Option name="Sourcefolder" type="Map">
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="The folder where the satellite images were downloaded" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="313" name="component_pos_x" type="double"/>
+        <Option value="31" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="Sourcefolder" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="120" name="component_pos_x" type="double"/>
+      <Option value="60" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option value="Sourcefolder" name="name" type="QString"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+    </Option>
+    <Option name="VRTDatafolder" type="Map">
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="540" name="component_pos_x" type="double"/>
+        <Option value="15" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="VRTDatafolder" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="121" name="component_pos_x" type="double"/>
+      <Option value="209" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option value="VRTDatafolder" name="name" type="QString"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+    </Option>
+    <Option name="VRTfolder" type="Map">
+      <Option value="" name="color" type="QString"/>
+      <Option name="comment" type="Map">
+        <Option value="" name="color" type="QString"/>
+        <Option value="Target folder for the virtual raster files" name="component_description" type="QString"/>
+        <Option value="60" name="component_height" type="double"/>
+        <Option value="145.80953643814235" name="component_pos_x" type="double"/>
+        <Option value="438.82209294122276" name="component_pos_y" type="double"/>
+        <Option value="100" name="component_width" type="double"/>
+        <Option value="true" name="outputs_collapsed" type="bool"/>
+        <Option value="true" name="parameters_collapsed" type="bool"/>
+      </Option>
+      <Option value="VRTfolder" name="component_description" type="QString"/>
+      <Option value="30" name="component_height" type="double"/>
+      <Option value="119" name="component_pos_x" type="double"/>
+      <Option value="355" name="component_pos_y" type="double"/>
+      <Option value="200" name="component_width" type="double"/>
+      <Option value="VRTfolder" name="name" type="QString"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+    </Option>
+  </Option>
+</Option>

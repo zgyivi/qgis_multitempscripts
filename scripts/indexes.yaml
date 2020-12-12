@@ -1,0 +1,26 @@
+Index definitions:
+  Sentinel2:
+    AVI: ("SentinelVRTLayer@8" * ( 1 - "SentinelVRTLayer@4") * ("SentinelVRTLayer@8"
+      - "SentinelVRTLayer@4"))^(1/3)
+    GRVI: ("SentinelVRTLayer@3" - "SentinelVRTLayer@4") / ("SentinelVRTLayer@3" +
+      "SentinelVRTLayer@4")
+    MSAVI2: (2*"SentinelVRTLayer@8" + 1 - sqrt((2*"SentinelVRTLayer@8"+1)^2 - 8 *
+      ("SentinelVRTLayer@8" - "SentinelVRTLayer@4"))) / 2
+    NDBR: ("SentinelVRTLayer@8" - "SentinelVRTLayer@12") / ("SentinelVRTLayer@8" +
+      "SentinelVRTLayer@12")
+    NDMI: ("SentinelVRTLayer@13" - "SentinelVRTLayer@11") / ("SentinelVRTLayer@13"
+      + "SentinelVRTLayer@11")
+    NDRE5: ("SentinelVRTLayer@8" - "SentinelVRTLayer@5") / ("SentinelVRTLayer@8" +
+      "SentinelVRTLayer@5")
+    NDRE6: ("SentinelVRTLayer@8" - "SentinelVRTLayer@6") / ("SentinelVRTLayer@8" +
+      "SentinelVRTLayer@6")
+    NDRE7: ("SentinelVRTLayer@8" - "SentinelVRTLayer@7") / ("SentinelVRTLayer@8" +
+      "SentinelVRTLayer@7")
+    NDVI: ("SentinelVRTLayer@8" - "SentinelVRTLayer@4") / ("SentinelVRTLayer@8" +
+      "SentinelVRTLayer@4")
+    NDWI: ("SentinelVRTLayer@8" - "SentinelVRTLayer@11") / ("SentinelVRTLayer@8" +
+      "SentinelVRTLayer@11")
+    OSAVI: ("SentinelVRTLayer@8" - "SentinelVRTLayer@4") / ("SentinelVRTLayer@8" +
+      "SentinelVRTLayer@4" + .16) * 1.16
+    SAVI05: ("SentinelVRTLayer@8" - "SentinelVRTLayer@4") / ("SentinelVRTLayer@8"
+      + "SentinelVRTLayer@4" + .5) * 1.5
