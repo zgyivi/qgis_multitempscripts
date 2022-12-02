@@ -15,7 +15,9 @@ class CreateIndexDefinitions(QgsProcessingAlgorithm):
             QgsProcessingParameterString('LAYERNAME', 'Virtual raster layer name with all Sentinel2 bands', defaultValue='SentinelVRTLayer'))
 
         self.addParameter(
-            QgsProcessingParameterFileDestination('OUTPUT', 'Destination file', defaultValue='indexes.yaml'))
+            #QgsProcessingParameterFileDestination('OUTPUT', 'Destination file', defaultValue='/AdatSSD/PREGA/Szakdolgozat/V2/indexes.yaml'))
+            QgsProcessingParameterFileDestination('OUTPUT', 'Destination file',
+                                                  defaultValue=os.path.join(os.path.dirname(__file__),'indexes.yaml')))
 
     def processAlgorithm(self, parameters, context, model_feedback):
         # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the

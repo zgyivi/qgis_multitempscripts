@@ -1,5 +1,6 @@
 from qgis.PyQt.QtCore import QCoreApplication
 from osgeo import gdal, osr, ogr, gdalconst as gc
+from qgis.core import QgsProject
 from qgis.core import QgsMessageLog
 from qgis.core import QgsProcessing
 from qgis.core import QgsProcessingAlgorithm
@@ -9,22 +10,26 @@ from qgis.core import QgsProcessingParameterMultipleLayers
 from qgis.core import QgsProcessingParameterString
 from qgis.core import QgsProcessingOutputMultipleLayers
 import processing
-import os
+import pathlib
 import re
-
+import xml.etree.ElementTree as ET
 
 class BuildCustomVRTs(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
+        defaultFileMask = r".+\/([0-9]{8})_(B[0-9]{1}[0-9,A]{1})\.tif$"
+        defaultBands = "B01,B02,B03,B04,B05,B06,B07,B08,B09,B10,B11,B12,B8A"
+        defaultOutFolder = QgsProject.instance().homePath()
+
         self.addParameter(QgsProcessingParameterMultipleLayers('INPUT', 'Raster layers to include in VRT', layerType= QgsProcessing.TypeFile))
         self.addParameter(QgsProcessingParameterString('MASK', 'Name parts to use as filename and band (regexp)', multiLine=False,
-                                                       defaultValue=r".+\/([0-9]{8})_(B[0-9]{1}[0-9,A]{1})\.tif$"))
+                                                       defaultValue=defaultFileMask))
         self.addParameter(
             QgsProcessingParameterString('BANDS', 'List of bands', multiLine=False,
-                                         defaultValue="B01,B02,B03,B04,B05,B06,B07,B08,B09,B10,B11,B12,B8A"))
+                                         defaultValue=defaultBands))
         self.addParameter(
             QgsProcessingParameterFolderDestination('OUTFOLDER', 'Virtual raster output folder',
-                                       defaultValue='/AdatSSD/PREGA/Szakdolgozat/V2/2021'),
+                                       defaultValue=defaultOutFolder),
             createOutput = True
         )
         self.addOutput(QgsProcessingOutputMultipleLayers('OUTPUT', 'Virtual rasters'))
@@ -69,7 +74,8 @@ class BuildCustomVRTs(QgsProcessingAlgorithm):
                 if thisgroup==None:
                     thisgroup = match.group(1)
                 if match.group(1) == thisgroup:
-                    filegroup[match.group(2)] = raster
+                    filepath = pathlib.Path(raster)
+                    filegroup[match.group(2)] = filepath.as_posix()
                     continue
             if feedback.isCanceled():
                 return {}
@@ -102,7 +108,7 @@ class BuildCustomVRTs(QgsProcessingAlgorithm):
                 }
                 
                 outputs[thisgroup]['BuildVirtualRaster'] = processing.run('gdal:buildvirtualraster', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
-                outfilename = os.path.join(parameters['OUTFOLDER'], thisgroup+".vrt")
+                outfilename = pathlib.Path(parameters['OUTFOLDER'], thisgroup+".vrt")
                 outputs[thisgroup]['CustomVRT'] = self.buildCustomVrt(outfilename, outputs[thisgroup]['BuildVirtualRaster']['OUTPUT'], vrtmap)
                 results['OUTPUT'].append(outputs[thisgroup]['CustomVRT'])
                 feedback.setCurrentStep(group)
@@ -138,16 +144,19 @@ class BuildCustomVRTs(QgsProcessingAlgorithm):
             vrt_sources = dsVRTRaw.GetRasterBand(i).GetMetadata(str('vrt_sources'))
             assert len(vrt_sources) == 1
             srcXML = vrt_sources['source_0']
-            # assert os.path.basename(srcFile) + '</SourceFilename>' in srcXML
             assert '<SourceBand>1</SourceBand>' in srcXML
-            SOURCE_TEMPLATES[vFile] = srcXML
+            source = ET.fromstring(srcXML)
+            sourceFilename = source.find('SourceFilename')
+            sourceFilename.set('relativeToVRT','1')
+            sourceFilename.text = pathlib.Path(sourceFilename.text).relative_to(outVRT.parent).as_posix()
+            SOURCE_TEMPLATES[vFile] = ET.tostring(source)
         gdal.Unlink(rawVRT)
 
         #Create a new VRT with band descriptions
         drvVRT = gdal.GetDriverByName('VRT')
         assert isinstance(drvVRT, gdal.Driver)
 
-        dsVRTDst = drvVRT.Create(outVRT, nXSize, nYSize, 0, eType=eType)
+        dsVRTDst = drvVRT.Create(outVRT.as_posix(), nXSize, nYSize, 0, eType=eType)
         assert isinstance(dsVRTDst, gdal.Dataset)
 
         if srs is not None:
@@ -171,7 +180,7 @@ class BuildCustomVRTs(QgsProcessingAlgorithm):
         #dsCheck = gdal.Open(outVRT)
         #assert isinstance(dsCheck, gdal.Dataset)
 
-        return outVRT
+        return outVRT.as_posix()
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)

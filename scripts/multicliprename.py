@@ -1,4 +1,5 @@
 from qgis.PyQt.QtCore import QCoreApplication
+from qgis.core import QgsProject
 from qgis.core import QgsMessageLog
 from qgis.core import QgsProcessing
 from qgis.core import QgsProcessingAlgorithm
@@ -10,19 +11,21 @@ from qgis.core import QgsProcessingParameterMultipleLayers
 from qgis.core import QgsProcessingParameterString
 from qgis.core import QgsProcessingOutputMultipleLayers
 from qgis import processing
-import os.path
+import pathlib
 import re
 
 class MultiClipRename(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
+        defaultArea = '310943.7976987961,319113.2415897856,5245878.353460406,5254768.630635895 [EPSG:32634]'
+        defaultRegEx = r".+_([0-9]{8})T[0-9]{6}_(B[0-9]{1}[0-9,A]{1})\.jp2$"
+        defaultOutFolder = QgsProject.instance().homePath()
         self.addParameter(QgsProcessingParameterMultipleLayers('INPUT', 'Rasters to clip', layerType= QgsProcessing.TypeFile))
-        self.addParameter(QgsProcessingParameterExtent('CLIPEXTENT', 'Selected area',
-                                                       defaultValue='310943.7976987961,319113.2415897856,5245878.353460406,5254768.630635895 [EPSG:32634]'))
-        self.addParameter(QgsProcessingParameterString('MASK', 'Matching rule (regexp)', multiLine=False, defaultValue=r".+_([0-9]{8})T[0-9]{6}_(B[0-9]{1}[0-9,A]{1})\.jp2$"))
+        self.addParameter(QgsProcessingParameterExtent('CLIPEXTENT', 'Selected area', defaultValue=defaultArea))
+        self.addParameter(QgsProcessingParameterString('MASK', 'Matching rule (regexp)', multiLine=False, defaultValue=defaultRegEx))
         self.addParameter(
             QgsProcessingParameterFile('OUTFOLDER', 'Folder to store clipped rasters', behavior=QgsProcessingParameterFile.Folder,
-                                       defaultValue='/AdatSSD/PREGA/Szakdolgozat/V2/2021/Data'),
+                                       defaultValue=defaultOutFolder),
             createOutput=True
         )
         self.addOutput(QgsProcessingOutputMultipleLayers('OUTPUT', 'Clipped rasters'))
@@ -44,22 +47,21 @@ class MultiClipRename(QgsProcessingAlgorithm):
         }
         i=0
 
-        #pattern = re.compile(r".+_([0-9]{8})T[0-9]{6}_(B[0-9]{1}[0-9,A]{1})\.jp2$")
         pattern = re.compile(parameters['MASK'])
         for filename in parameters['INPUT']:
             match = pattern.match(filename)
             if not match:
                 continue
-            clippedfilename = os.path.join(parameters['OUTFOLDER'],match.group(1)+"_"+match.group(2)+".tif")
-
+            clippedfilename = pathlib.Path(parameters['OUTFOLDER'],match.group(1)+"_"+match.group(2)+".tif")
+            inputpath = pathlib.Path(filename)
             alg_params = {
                 'DATA_TYPE': 0,
                 'EXTRA': '',
-                'INPUT': filename,
+                'INPUT': inputpath.as_posix(),
                 'NODATA': None,
                 'OPTIONS': '',
                 'PROJWIN': parameters['CLIPEXTENT'],
-                'OUTPUT': clippedfilename,
+                'OUTPUT': clippedfilename.as_posix(),
             }
             if feedback.isCanceled():
                 return {}
@@ -68,7 +70,7 @@ class MultiClipRename(QgsProcessingAlgorithm):
                                                                      is_child_algorithm=True)['OUTPUT']
             feedback.setCurrentStep(i)
             i=i+1
-            outputs['LISTOFCLIPPEDRASTERS'].append(clippedfilename)
+            outputs['LISTOFCLIPPEDRASTERS'].append(clippedfilename.as_posix())
 
         results['OUTFOLDER'] = parameters['OUTFOLDER']
         results['OUTPUT'] = outputs['LISTOFCLIPPEDRASTERS']

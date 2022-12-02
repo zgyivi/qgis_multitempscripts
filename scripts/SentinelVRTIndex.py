@@ -10,6 +10,7 @@ from qgis.core import QgsProcessingParameterString
 from qgis.core import QgsProcessingParameterFile
 from qgis.core import QgsProcessingParameterEnum
 import processing
+import os
 import yaml
 
 class SentinelVRTIndexCalc(QgsProcessingAlgorithm):
@@ -17,15 +18,25 @@ class SentinelVRTIndexCalc(QgsProcessingAlgorithm):
     indexdefs = {}
 
     def initAlgorithm(self, config=None):
-        with open("indexes.yaml", 'r') as stream:
-            try:
-                self.indexdefs = yaml.safe_load(stream)
-            except yaml.YAMLError as exc:
-                print(exc)
-
+        indexdeffile=os.path.join(os.path.dirname(__file__), "indexes.yaml")
+        if os.path.exists(indexdeffile):
+            with open(indexdeffile, 'r') as stream:
+                try:
+                    self.indexdefs = yaml.safe_load(stream)
+                except yaml.YAMLError as exc:
+                    print(exc)
+        else:
+            layer = 'SentinelVRTLayer'
+            self.indexdefs = {
+                'Index definitions': {
+                    'Sentinel2': {
+                        'NDVI': '(\"' + layer + '@8\" - \"' + layer + '@4\") / (\"' + layer + '@8\" + \"' + layer + '@4\")',
+                    }
+                }
+            }
         self.addParameter(QgsProcessingParameterRasterLayer('SentinelVrtLayer', 'SentinelVRTLayer', defaultValue=None))
         self.addParameter(QgsProcessingParameterEnum('INDEX', 'Index', options=self.indexdefs['Index definitions']['Sentinel2'].keys(), allowMultiple=False, defaultValue=None))
-        self.addParameter(QgsProcessingParameterFile('LayerStyledefinition', 'Layer Style definition', behavior=QgsProcessingParameterFile.File, fileFilter='Style Files (*.qml)', defaultValue='/AdatSSD/PREGA/Szakdolgozat/V1/Styles/NDVIstyle.qml'))
+        self.addParameter(QgsProcessingParameterFile('LayerStyledefinition', 'Layer Style definition', behavior=QgsProcessingParameterFile.File, fileFilter='Style Files (*.qml)', defaultValue=os.path.join(os.path.dirname(__file__), "NDVIstyle.qml")))
         self.addParameter(QgsProcessingParameterRasterDestination('OUTPUT', 'Output', createByDefault=True, defaultValue=None),
                           createOutput = True
         )
@@ -38,7 +49,7 @@ class SentinelVRTIndexCalc(QgsProcessingAlgorithm):
         outputs = {}
 
         indexequation = str(self.indexdefs['Index definitions']['Sentinel2'][list(self.indexdefs['Index definitions']['Sentinel2'].keys())[parameters['INDEX']]])
-        vrtname = parameters['SentinelVrtLayer'].split('_',1)[0]
+        vrtname = parameters['SentinelVrtLayer'].rsplit('_',1)[0]
         indexequation = indexequation.replace("SentinelVRTLayer", vrtname)
         feedback.pushDebugInfo("indexequation: " + str(indexequation))
         # Raster calculator
@@ -59,11 +70,12 @@ class SentinelVRTIndexCalc(QgsProcessingAlgorithm):
             return {}
 
         # Set layer style
-        alg_params = {
-            'INPUT': outputs['RasterCalculator']['OUTPUT'],
-            'STYLE': parameters['LayerStyledefinition']
-        }
-        outputs['SetLayerStyle'] = processing.run('native:setlayerstyle', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+        if os.path.exists(parameters['LayerStyledefinition']) :
+            alg_params = {
+                'INPUT': outputs['RasterCalculator']['OUTPUT'],
+                'STYLE': parameters['LayerStyledefinition']
+            }
+            outputs['SetLayerStyle'] = processing.run('native:setlayerstyle', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
 
         return results
 

@@ -11,21 +11,25 @@ from qgis.core import QgsProcessingParameterNumber
 from qgis.core import QgsRasterLayer
 from datetime import datetime
 import processing
-import os.path
+import pathlib
 import re
 
 class CountDaysOverLimit(QgsProcessingAlgorithm):
 
     def initAlgorithm(self, config=None):
+        defaultFileNameMask = r".*(([0-9]{8})_([0-9,A-Z]*).*\.tif)$"
+        defaultDateFormat = r"%Y%m%d"
+        defaultThreshold = 0.5
         self.addParameter(QgsProcessingParameterMultipleLayers('INPUT', 'Input rasters',
-                                                               layerType=QgsProcessing.TypeRaster,defaultValue=None))
+                                                               layerType=QgsProcessing.TypeRaster,
+                                                               defaultValue=None))
         self.addParameter(QgsProcessingParameterString('FILENAMEMASK', 'Matching rule (regexp)', multiLine=False,
-                                                       defaultValue=r".*(([0-9]{8})_([0-9,A-Z]*).*\.tif)$"))
+                                                       defaultValue=defaultFileNameMask))
         self.addParameter(QgsProcessingParameterString('DATEFORMAT', 'Date format', multiLine=False,
-                                                       defaultValue=r"%Y%m%d"))
+                                                       defaultValue=defaultDateFormat))
         self.addParameter(
             QgsProcessingParameterNumber('THRESHOLD', 'Threshold', type=QgsProcessingParameterNumber.Double,
-                                         defaultValue=0.5))
+                                         defaultValue=defaultThreshold))
         self.addParameter(QgsProcessingParameterRasterDestination('OUTPUT', 'Output',
                           createByDefault=True, defaultValue=None),
                           createOutput = True
@@ -120,6 +124,9 @@ class CountDaysOverLimit(QgsProcessingAlgorithm):
         equation = equation.replace("?days?", str(daysbetween))
         feedback.pushDebugInfo("equation: " + str(equation))
         # Raster calculator
+        fileA = pathlib.Path(raster1)
+        fileB = pathlib.Path(raster2)
+        fileC = pathlib.Path(sumraster)
         alg_params = {
             'BAND_A': 1,
             'BAND_B': 1,
@@ -129,16 +136,16 @@ class CountDaysOverLimit(QgsProcessingAlgorithm):
             'BAND_F': None,
             'EXTRA': '',
             'FORMULA': equation,
-            'INPUT_A': raster1,
-            'INPUT_B': raster2,
-            'INPUT_C': sumraster,
+            'INPUT_A': fileA.as_posix(),
+            'INPUT_B': fileB.as_posix(),
+            'INPUT_C': fileC.as_posix(),
             'INPUT_D': None,
             'INPUT_E': None,
             'INPUT_F': None,
             'NO_DATA': None,
             'OPTIONS': '',
             'RTYPE': 5,
-            'OUTPUT': sumraster
+            'OUTPUT': fileC.as_posix(),
         }
         return processing.run('gdal:rastercalculator', alg_params, context=context,
                                                      feedback=feedback, is_child_algorithm=True)
